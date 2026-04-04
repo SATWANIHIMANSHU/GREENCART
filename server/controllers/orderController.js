@@ -9,7 +9,6 @@ export const placeOrderCOD = async (req, res) => {
     const userId = req.user.id;
 const { items, address } = req.body;
 
-   const userData = await User.findById(userId);
 
     if (!address || items.length === 0) {
     return  res.json({ success: false, message: "Invalid Data" });
@@ -46,6 +45,8 @@ export const placeOrderCashfree = async (req, res) => {
   try {
     const userId = req.user.id;
     const { items, address } = req.body;
+    const userData = await User.findById(userId);
+
 
     if (!address || items.length === 0) {
       return res.json({ success: false, message: "Invalid data" });
