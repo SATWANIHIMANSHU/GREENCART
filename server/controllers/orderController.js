@@ -1,15 +1,18 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 import axios from "axios";
-
+import User from "../models/User.js";
 // place order COD: /api/order/cod
 
 export const placeOrderCOD = async (req, res) => {
   try {
     const userId = req.user.id;
 const { items, address } = req.body;
+
+   const userData = await User.findById(userId);
+
     if (!address || items.length === 0) {
-      res.json({ success: false, message: "Invalid Data" });
+    return  res.json({ success: false, message: "Invalid Data" });
     }
 
     // calculate amount using items
@@ -88,8 +91,8 @@ export const placeOrderCashfree = async (req, res) => {
         order_currency: "INR",
         customer_details: {
           customer_id: userId.toString(),
-         customer_email: user.email,
-         customer_phone: user.phone
+         customer_email: userData.email,
+          customer_phone: userData.phone || "9999999999",
         },
         order_meta: {
           return_url: `http://localhost:5173/verify?order_id=${order._id}`,
