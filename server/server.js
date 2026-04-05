@@ -20,12 +20,34 @@ await connectCloudinary()
 
 
 //Allow multiple origins
-const allowedOrigins = ['http://localhost:5173','https://greencart-lime-six.vercel.app']
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://greencart-lime-six.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps / postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log("❌ Blocked by CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
+
+// ✅ Handle preflight requests (VERY IMPORTANT)
+app.options('*', cors());
+
 
 // Middleware configuration
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin:allowedOrigins, credentials:true}));
 
 
 app.get('/', (req, res) => {
