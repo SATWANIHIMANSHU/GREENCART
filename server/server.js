@@ -2,7 +2,7 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import cors from 'cors';
 import connectDB from './configs/db.js';
-import 'dotenv/config'
+import 'dotenv/config';
 import userRouter from './routes/userRoute.js';
 import sellerRouter from './routes/sellerRoute.js';
 import connectCloudinary from './configs/cloudinary.js';
@@ -11,29 +11,32 @@ import cartRouter from './routes/cartRoute.js';
 import addressRouter from './routes/addressRoute.js';
 import orderRouter from './routes/orderRoute.js';
 
-
 const app = express();
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 4000;
 
-await connectDB()
-await connectCloudinary()
+// ❌ REMOVE await (important for Vercel)
+connectDB();
+connectCloudinary();
 
 
-//Allow multiple origins
+// ✅ Allowed origins
 const allowedOrigins = [
   'http://localhost:5173',
   'https://greencart-lime-six.vercel.app'
 ];
 
+
+// ✅ FIXED CORS (IMPORTANT)
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps / postman)
+    console.log("🌍 Origin:", origin); // debug
+
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
+      callback(null, origin); // ✅ IMPORTANT FIX
     } else {
-      console.log("❌ Blocked by CORS:", origin);
+      console.log("❌ Blocked:", origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
@@ -41,26 +44,31 @@ app.use(cors({
 }));
 
 
-// ✅ Handle preflight requests (VERY IMPORTANT)
-app.use(cors());
+// ❌ REMOVE THIS LINE (VERY IMPORTANT)
+// app.use(cors());
 
 
-// Middleware configuration
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
 
+// Test route
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('API is working 🚀');
+});
 
-app.use('/api/user',userRouter);
-app.use('/api/seller',sellerRouter);
-app.use('/api/product',productRouter);
-app.use('/api/cart',cartRouter);
-app.use('/api/address',addressRouter);
-app.use('/api/order',orderRouter);
 
+// Routes
+app.use('/api/user', userRouter);
+app.use('/api/seller', sellerRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/address', addressRouter);
+app.use('/api/order', orderRouter);
+
+
+// Start server
 app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`)
-})
+  console.log(`Server is running on port: ${port}`);
+});
