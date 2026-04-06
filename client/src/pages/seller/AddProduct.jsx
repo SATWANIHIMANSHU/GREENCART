@@ -156,7 +156,7 @@ const AddProduct = () => {
     <option value="litre">Litre (L)</option>
     <option value="ml">Millilitre (ml)</option>
     <option value="piece">Piece</option>
-    <option value="piece">Pack</option>
+    <option value="pack">Pack</option>
   </select>
 </div>
         <div className="flex items-center gap-5 flex-wrap">
