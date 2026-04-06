@@ -7,6 +7,12 @@ const productSchema = new mongoose.Schema({
     offerPrice: {type: Number, required:true},
     image: {type: Array, required:true},
     category: {type: String, required:true},
+    unit: { 
+        type: String, 
+        enum: ["kg", "g", "litre", "ml", "piece"], 
+        required: true 
+    },
+
     inStock: {type: Boolean, default:true  },
 },{timestamps:true})
 
