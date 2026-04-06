@@ -8,6 +8,7 @@ const AddProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [unit, setUnit] = useState("");
   const [price, setPrice] = useState("");
   const [offerPrice, setofferPrice] = useState("");
 
@@ -23,6 +24,7 @@ const AddProduct = () => {
         category,
         price,
         offerPrice,
+        unit,
       }
       
        const formData = new FormData();
@@ -38,6 +40,7 @@ const AddProduct = () => {
         setName('');
         setDescription('');
         setCategory('');
+        setUnit('');
         setPrice('');
         setofferPrice('');
         setFiles([]);
@@ -136,6 +139,25 @@ const AddProduct = () => {
            ))}
           </select>
         </div>
+        <div className="w-full flex flex-col gap-1">
+  <label className="text-base font-medium" htmlFor="unit">
+    Unit
+  </label>
+  <select
+    onChange={(e) => setUnit(e.target.value)}
+    value={unit}
+    id="unit"
+    className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+    required
+  >
+    <option value="">Select Unit</option>
+    <option value="kg">Kilogram (kg)</option>
+    <option value="g">Gram (g)</option>
+    <option value="litre">Litre (L)</option>
+    <option value="ml">Millilitre (ml)</option>
+    <option value="piece">Piece</option>
+  </select>
+</div>
         <div className="flex items-center gap-5 flex-wrap">
           <div className="flex-1 flex flex-col gap-1 w-32">
             <label className="text-base font-medium" htmlFor="product-price">
