@@ -17,6 +17,9 @@ const AllProducts = () => {
         }
    }, [products,searchQuery])
    
+     const inStockProducts = filteredProducts.filter(
+     (product) => product.inStock
+   );
 
   return (
     <div>
@@ -28,10 +31,26 @@ const AllProducts = () => {
   </div>
 
   <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6'>
-       {filteredProducts.filter((product)=> product.inStock).map((product,index)=>(
-        <ProductCard key={index} product={product}/>
-       ))}
-  </div>
+
+        {inStockProducts.length > 0 ? (
+          inStockProducts.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))
+        ) : (
+          <div className="col-span-full text-center py-10">
+            <p className="text-lg md:text-xl font-medium text-gray-600">
+               No products found
+            </p>
+
+            {searchQuery && (
+              <p className="text-sm text-gray-400 mt-2">
+                Try searching for something else
+              </p>
+            )}
+          </div>
+        )}
+
+      </div>
 
     </div>
   )
